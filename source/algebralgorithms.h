@@ -1,0 +1,88 @@
+#ifndef ALGEBRALGORITHMS_H_
+#define ALGEBRALGORITHMS_H_
+
+#include "algebratypes.h"
+#include <cstdio>
+#define epsilon 0.00000001
+
+double abs(double x) {
+    if (x >= 0.0) return x;
+    else return -x;
+}
+
+//not working yet hehe
+matrix gauss_jordan_inverse (const matrix& m) {
+    int iter = 0;
+    assert(m.is_square());
+    int n = m.n_rows();
+    matrix a(m);
+    matrix inv = matrix::identity(n);
+    for (int i=0 ; i<n ; ++i) {
+        double max_pivot = i;
+        for (int j=0 ; j<n ; ++j) {
+            if (a(j,i) >= a(max_pivot,i)) {
+                max_pivot = j;
+            }
+        }
+        a.swap_lines(i,max_pivot);
+        inv.swap_lines(i,max_pivot);
+
+        cout << "iter: " << iter++ << endl;
+        a.print();
+
+        double ratio = 1/a(i,i);
+        a.multiply_line(ratio,i);
+        inv.multiply_line(ratio,i);
+        for (int j=0 ; j<n ; ++j) {
+            if (j != i) {
+                double c = m(j,i);
+                a.sum_lines(-c,i,j);
+                inv.sum_lines(-c,i,j);
+                cout << "iter: " << iter++ << endl <<"c: " << c << endl;
+                a.print();
+            }
+        }
+    }
+    a.print();
+    inv.print();
+    return inv;
+}
+
+bool is_accurate (const m_vector& a, const m_vector& b) {
+    double max_diff = 0.0;
+    double max_el   = 0.0;
+    for (int i=0 ; i<a.size() ; ++i) {
+        if (abs(a(i)-b(i)) > max_diff) max_diff = abs(a(i)-b(i));
+        if (abs(a(i))>max_el) max_el = abs(a(i));
+    }
+    if (max_diff/max_el < epsilon) return true;
+    else return false;
+}
+
+//this works
+m_vector gauss_jacobi (matrix& a, m_vector& b, m_vector initial_guess) {
+    assert(a.is_square() && a.n_rows() == b.size());
+    int n = a.n_rows();
+    m_vector d = initial_guess;
+    m_vector e (n);
+    int k=0;
+
+    while (!is_accurate(d,e)) {
+        e = d;
+        for (int i=0 ; i<n ; ++i) {
+            double sigma = 0;
+            for (int j=0 ; j<n ; ++j) {
+                if (j != i) {
+                    sigma += a(i,j)*e(j);
+                }
+            }
+            d(i) = (b(i)-sigma)/a(i,i);
+            cout << "iter : " << k++ << endl;
+            d.print();
+
+        }
+    }
+    return d;
+}
+
+#endif //ALGEBRALGORITHMS_H_
