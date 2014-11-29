@@ -100,7 +100,7 @@ matrix iterative_inverse (matrix& a, m_vector(*solver)(matrix&,m_vector&,m_vecto
 }
 
 //Strict row diagonal dominance
-bool criterio_das_linhas (matrix& a) {
+bool is_diagonally_dominant (matrix& a) {
 	int n=a.n_rows();
 	for (int j=0;j<n;j++) {
 		double s=0;
