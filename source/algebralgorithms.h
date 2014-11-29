@@ -85,4 +85,18 @@ m_vector gauss_jacobi (matrix& a, m_vector& b, m_vector initial_guess) {
     return d;
 }
 
+matrix iterative_inverse (matrix& a, m_vector(*solver)(matrix&,m_vector&,m_vector)) {
+    assert(a.is_square());
+    int n = a.n_rows();
+    vector<m_vector> columns;
+    m_vector iden_col(n);
+    m_vector o(n);
+    for (int i=0 ; i<n ; ++i) {
+        iden_col(i) = 1;
+        columns.push_back((*solver)(a,iden_col,o));
+        iden_col(i) = 0;
+    }
+    return matrix(columns);
+}
+
 #endif //ALGEBRALGORITHMS_H_
