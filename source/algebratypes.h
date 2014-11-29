@@ -18,6 +18,7 @@ class matrix {
         matrix (int,int);
         matrix (const matrix&);
         matrix (std::initializer_list<m_vector>);
+        matrix (std::vector<m_vector>);
 
 
         //destructor
