@@ -99,4 +99,22 @@ matrix iterative_inverse (matrix& a, m_vector(*solver)(matrix&,m_vector&,m_vecto
     return matrix(columns);
 }
 
+//Strict row diagonal dominance
+bool criterio_das_linhas (matrix& a) {
+	int n=a.n_rows();
+	for (int j=0;j<n;j++) {
+		double s=0;
+		for (int i=0;i<n;i++) {
+			if (j!=i) {
+				s=abs(a(i,j))+s;
+			}
+		}
+		s=s/abs(a(j,j));
+		if (s>=1) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 #endif //ALGEBRALGORITHMS_H_
