@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <assert.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 class m_vector;
@@ -32,26 +33,30 @@ class matrix {
 
         //functions
         double* line (int);
-        double& at (int,int) const;
-        void print (void);
+        double& at (int,int) const; //at(i,j)++ ou at(i,j) = 0.0
+        void print (void); //matrix m; m[i][j];
         matrix transpose (void);
 
         //getters and properties
         inline int n_rows (void) const;
         inline int n_columns (void) const;
-        inline bool is_square (void);
+        inline bool is_square (void) const;
 
         //access operators
         inline double* operator[] (int);
         inline double& operator() (int,int) const;
 
-        //arithmetic operators
-
+        //line operations
+        void sum_lines (double,int,int);
+        void swap_lines (int,int);
+        void multiply_line (double,int);
 
 
     protected :
+
         double** m;
         int r, c;
+
 };
 
 //returns the ith line
@@ -70,7 +75,7 @@ inline int matrix::n_rows () const { return r; }
 
 inline int matrix::n_columns () const { return c; }
 
-inline bool matrix::is_square () { return (r == c); }
+inline bool matrix::is_square () const { return (r == c); }
 
 //overload for the line(int) method so one can use M[i][j] to access the matrix elements
 inline double* matrix::operator[] (int i) { return line(i); }
@@ -108,6 +113,7 @@ class m_vector {
         double& operator[] (int) const;
         double& operator() (int) const;
 
+        m_vector& operator= (const m_vector&);
         m_vector& operator+= (const m_vector&);
         m_vector& operator-= (const m_vector&);
 
@@ -119,6 +125,7 @@ class m_vector {
 
         double* v;
         int sz;
+
 };
 
 inline double& m_vector::operator[] (int i) const { return v[i]; }
@@ -126,6 +133,13 @@ inline double& m_vector::operator[] (int i) const { return v[i]; }
 inline double& m_vector::operator() (int i) const {
     assert(i >= 0 && i < sz);
     return v[i];
+}
+
+inline m_vector& m_vector::operator= (const m_vector& a) {
+    for (int i=0 ; i<a.size() && i<size() ; ++i) {
+        v[i] = a(i);
+    }
+    return *this;
 }
 
 inline m_vector operator* (const matrix& M, const m_vector& vec) {
