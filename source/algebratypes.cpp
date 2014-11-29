@@ -43,6 +43,27 @@ matrix::matrix (std::initializer_list<m_vector> l) {
     c = n_columns;
 }
 
+matrix::matrix (std::vector<m_vector> l) {
+    int n_columns = l.size();
+    int n_rows    = 0;
+
+    for (const auto& v : l)
+        if (v.size() > n_rows) n_rows = v.size();
+
+    m = new double*[n_rows];
+    for (int i=0 ; i<n_rows ; ++i) m[i] = new double[n_columns];
+
+    int j = 0;
+
+    for (const auto& v : l) {
+        for (int i=0 ; i<v.size() ; ++i) m[i][j] = v(i);
+        for (int i=v.size() ; i<n_rows ; ++i) m[i][j] = 0;
+        j++;
+    }
+    r = n_rows;
+    c = n_columns;
+}
+
 //deletes the underlying 2d array
 matrix::~matrix () {
     for (int i=0 ; i < r ; ++i) delete []  m[i];
