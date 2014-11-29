@@ -120,11 +120,30 @@ void matrix::print () {
 }
 
 void divide_matrix (const matrix& a, const matrix& b, const matrix& c) {
-
+    //TODO
 }
 
 double determinant (const matrix& a) {
+    //TODO
+
     return 0.0;
+}
+
+void matrix::sum_lines (double c, int i, int j) {
+    if (i<0 || i>=r || j<0 || j >=r) return;
+    for (int k=0 ; k<this->c ; ++k) m[j][k] += c * m[i][k];
+}
+
+void matrix::swap_lines (int i, int j) {
+    if (i<0 || i>=r || j<0 || j >=r) return;
+    auto aux = m[i];
+    m[i] = m[j];
+    m[j] = aux;
+}
+
+void matrix::multiply_line (double c, int i) {
+    if (i<0 || i>=r) { cout << "fora\n"; return; }
+    for (int k=0 ; k<this->c ; ++k) { m[i][k] *= c; }
 }
 
 //----------------------m_vector functions-----------------------
