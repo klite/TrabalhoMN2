@@ -99,20 +99,17 @@ matrix iterative_inverse (matrix& a, m_vector(*solver)(matrix&,m_vector&,m_vecto
 }
 
 bool is_diagonally_dominant (matrix& a) {
-	int i,j,n=a.n_rows();
-	for (i=0;i<n;i++) {
-		double s=0;
-		for (j=0;j<n;j++) {
-			if (j!=i) {
-				s=abs(a(i,j))+s;
-			}
-		}
-		s=s/abs(a(i,i));
-		if (s>=1) {
-			return 0;
-		}
+    int n = a.n_rows();
+    for (int i=0 ; i<n ; i++) {
+        double s = 0;
+	for (int j=0 ; j<n ; j++) {
+	    if (j != i) {
+		s += abs(a(i,j));
+	    }
 	}
-	return 1;
+	if (s/abs(a(i,i)) >= 1) return false;
+    }
+    return true;
 }
 
 //it is swaping only lines and it is not working properly yet // very much gambiarra and love <3
