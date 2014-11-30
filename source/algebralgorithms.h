@@ -79,7 +79,6 @@ m_vector gauss_jacobi (matrix& a, m_vector& b, m_vector initial_guess) {
             d(i) = (b(i)-sigma)/a(i,i);
             cout << "iter : " << k++ << endl;
             d.print();
-
         }
     }
     return d;
@@ -145,7 +144,7 @@ matrix fixed_matrix (matrix& a) {
 			}
 		}
 	}
-	return a;
+return a;
 }
 
 #endif //ALGEBRALGORITHMS_H_
