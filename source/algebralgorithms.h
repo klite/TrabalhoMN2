@@ -122,25 +122,17 @@ matrix fixed_matrix (matrix& a) {
 	for (i=0;i<n;i++) {
 		double s=0,maior=0;
 		for (j=0;j<n;j++) {
-			if (j!=i) {
-				s=abs(a(i,j))+s;
-			}
+			if (j!=i) s=abs(a(i,j))+s;
 		}
 		s=s/abs(a(i,i));
 		if (s>=1) {
 			for (int p=0;p<n;p++) {
 				if (p!=i and p!=errado)
 					for (int q=0;q<n;q++)
-						if (aux(p,q)>maior)
-							maior=aux(p,q);
-				if (maior>aux(i,i))
-					aux.swap_lines (i, p);
-				if (!(is_diagonally_dominant(aux))) {
-					errado=p;
-				}
-				else{
-					return aux;
-				}
+						if (aux(p,q)>maior) maior=aux(p,q);
+				if (maior>aux(i,i)) aux.swap_lines (i, p);
+				if (!is_diagonally_dominant(aux)) errado=p;
+				else return aux;
 			}
 		}
 	}
