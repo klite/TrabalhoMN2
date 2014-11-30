@@ -99,22 +99,49 @@ matrix iterative_inverse (matrix& a, m_vector(*solver)(matrix&,m_vector&,m_vecto
     return matrix(columns);
 }
 
-//Strict row diagonal dominance
 bool is_diagonally_dominant (matrix& a) {
-	int n=a.n_rows();
-	for (int j=0;j<n;j++) {
+	int i,j,n=a.n_rows();
+	for (i=0;i<n;i++) {
 		double s=0;
-		for (int i=0;i<n;i++) {
+		for (j=0;j<n;j++) {
 			if (j!=i) {
 				s=abs(a(i,j))+s;
 			}
 		}
-		s=s/abs(a(j,j));
+		s=s/abs(a(i,i));
 		if (s>=1) {
 			return 0;
 		}
 	}
 	return 1;
+}
+
+//not working properly yet // very crazy gambiarra // juliana ta desmaiada // #AyudarleCamaradas
+matrix fixed_matrix (matrix& a) {
+    int errado=-1,i,j,n=a.n_rows();
+	for (i=0;i<n;i++) {
+		double s=0,maior=0;
+		for (j=0;j<n;j++) {
+			if (j!=i) {
+				s=abs(a(i,j))+s;
+			}
+		}
+		s=s/abs(a(i,i));
+		if (s>=1) {
+			for (int p=0;p<n;p++) {
+				if (p!=i and p>errado)
+					for (int q=0;q<n;q++)
+						if (a(p,q)>maior)
+							maior=a(p,q);
+				if (maior>a(i,i))
+					a.swap_lines (i, p);
+				if (!is_diagonally_dominant){
+					i=0;j=0;errado=p;
+				}
+			}
+		}
+	}
+	return a;
 }
 
 #endif //ALGEBRALGORITHMS_H_
