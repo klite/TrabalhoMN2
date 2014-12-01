@@ -136,4 +136,32 @@ matrix fixed_matrix (matrix& a) {
     return a;
 }
 
+bool sassenfeld(matrix& m) {
+	m_vector beta (m.n_columns);
+	for (int a = 0; a<beta.size(); ++a) {
+		beta[a] = 1.0;
+	}
+	for(int i = 0; i<m.n_rows; ++i) {
+		double diagonal = 0;
+		double somatorio = 0;
+		for (int j = 0; j<(m.n_columns-1); ++j {
+			if(i==j) {
+				diagonal = m[i][j];
+			}
+			else {
+				somatorio += m[i][j]*beta[j]; 
+			}
+		}
+		beta[i] = somatorio/diagonal;
+	}
+	double max = 0.0;
+	for (int b = 0; b<beta.size(); ++b) {
+		if (abs(beta[b]) > max) {
+			max = abs(beta[b]);
+		}
+	}
+	if (max < 1.0) return true;
+	return false;
+}
+
 #endif //ALGEBRALGORITHMS_H_
