@@ -137,14 +137,14 @@ matrix fixed_matrix (matrix& a) {
 }
 
 bool sassenfeld(matrix& m) {
-	m_vector beta (m.n_columns);
+	m_vector beta (m.n_columns());
 	for (int a = 0; a<beta.size(); ++a) {
 		beta[a] = 1.0;
 	}
-	for(int i = 0; i<m.n_rows; ++i) {
+	for(int i = 0; i<m.n_rows(); ++i) {
 		double diagonal = 0;
 		double somatorio = 0;
-		for (int j = 0; j<(m.n_columns-1); ++j {
+		for (int j = 0; j<(m.n_columns()-1); ++j) {
 			if(i==j) {
 				diagonal = m[i][j];
 			}
